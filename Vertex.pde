@@ -8,19 +8,20 @@ class Vertex {
 	Vertex(int r, int conn[]) {
 		position = new PVector(random(50, width - radius * 2), random(50, height - radius * 2));
 		movement = new PVector(0, 0);
-		acceleration = new PVector(0, 0);
+		acceleration = new PVector(random(-1, 1), random(-1, 1));
 		radius = r;
 		connectance = conn;
 	}
 
 	void displayVertex(Vertex ver) {
+		pushMatrix();
+		translate(position.x, position.y);
 		fill(195, 82, 80);
-		ellipse(position.x, position.y, radius*2, radius*2);
+		ellipse(0, 0, radius*2, radius*2);
+		popMatrix();
 
 		stroke(2);
 		line(position.x, position.y, ver.position.x, ver.position.y);
-
-		applyForce(ver.position);
 	}
 
 	// Practise a little bit of functional programming: divide the rendering process for the vertex connections into serveral functions.
@@ -45,44 +46,52 @@ class Vertex {
 				j++;
 			}
 		}
-
 		return(connectanceArrayPos);
 	}
 
 
 	void applyForce(PVector ver) {
 		edgeCollision();
-		PVector movementForce = calculateForce(ver);
-		movementForce.limit(1);
-		acceleration.add(movementForce);
+		acceleration = calculateForce(ver);
 		movement.add(acceleration);
 		position.add(movement);
 		acceleration.mult(0);
-		movement.mult(0);
 	}
 
+
+// I got it. I just added the raw force value to the indidivual accelerations, which make the vertices bounce without any sense. I need to translate and rotate the scene to the target vertex and let it move in that direction!
 	float forceEquation(float distance) {
-		float force = 0.0001*distance - 10000/pow(distance, 2);
+		//float force = -0.05 * distance;
+		float force = pow(distance, 2) / 15;
+		force *= 0.25;
+		//float force = 0.5;
 		return(force);
 	}
 
 	PVector calculateForce(PVector ver) {
-		PVector distance = position.sub(ver);
-		PVector force = new PVector(forceEquation(distance.x), forceEquation(distance.y));
+		PVector distance = PVector.sub(position, ver);
+		float forceX = forceEquation(distance.x);
+		float forceY = forceEquation(distance.y);
+		PVector force = new PVector(forceX, forceY);
+		force.limit(1);
 		return(force);
 	}
 
 	void edgeCollision() {
 		if(position.x > (width - radius)) {
 			movement.x *= -1;
+			position.x = width - radius;
 		} else if(position.x < radius) {
 			movement.x *= -1;
+			position.x = radius;
 		}
 
 		if(position.y > (height - radius)) {
 			movement.y *= -1;
+			position.y = height - radius;
 		} else if(position.y < radius) {
 			movement.y *= -1;
+			position.y = radius;
 		}
 	}
 }

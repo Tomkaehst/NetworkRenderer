@@ -13,8 +13,9 @@
 // tricky! Let's see how I do . . .
 // (Object-oriented style would be good here)
 
-int[][] testArray = {{1, 1},
-					 {1, 1}};
+int[][] testArray = {{1, 1, 1},
+					 {1, 1, 1},
+					 {1, 1, 1}};
 int cols = testArray[1].length;
 int rows = testArray.length;
 
@@ -25,7 +26,7 @@ Network net;
 
 void setup() {
 	size(720, 720);
-	frameRate(2);
+	frameRate(30);
 	pixelDensity(displayDensity());
 	smooth();
 
@@ -39,5 +40,5 @@ void draw() {
 	background(220);
 
 	net.renderNetwork();
-	println(net.vArray.get(0).acceleration.x);
+	//println(net.vArray.get(0).acceleration.x);
 }
