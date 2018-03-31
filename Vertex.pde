@@ -1,25 +1,26 @@
 class Vertex {
 	PVector position;
 	PVector movement;
-	int diameter;
+	PVector acceleration;
+	int radius;
 	int[] connectance;
 
-	Vertex(int d, int conn[]) {
-		position = new PVector(random(50, width - diameter), random(50, height - diameter));
-		diameter = d;
+	Vertex(int r, int conn[]) {
+		position = new PVector(random(50, width - radius * 2), random(50, height - radius * 2));
+		movement = new PVector(0, 0);
+		acceleration = new PVector(0, 0);
+		radius = r;
 		connectance = conn;
 	}
 
 	void displayVertex(Vertex ver) {
-		pushMatrix();
-		translate(position.x, position.y);
-		noStroke();
 		fill(195, 82, 80);
-		ellipse(0, 0, diameter, diameter);
-		popMatrix();
+		ellipse(position.x, position.y, radius*2, radius*2);
 
 		stroke(2);
 		line(position.x, position.y, ver.position.x, ver.position.y);
+
+		applyForce(ver.position);
 	}
 
 	// Practise a little bit of functional programming: divide the rendering process for the vertex connections into serveral functions.
@@ -48,19 +49,41 @@ class Vertex {
 		return(connectanceArrayPos);
 	}
 
-	void applyForce(PVector force) {
 
+	void applyForce(PVector ver) {
+		edgeCollision();
+		PVector movementForce = calculateForce(ver);
+		movementForce.limit(1);
+		acceleration.add(movementForce);
+		movement.add(acceleration);
+		position.add(movement);
+		acceleration.mult(0);
+		movement.mult(0);
 	}
 
-	PVector calculateForce(Vertex ver) {
-		float distance = position.dist(ver.position);
-		
+	float forceEquation(float distance) {
+		float force = 0.0001*distance - 10000/pow(distance, 2);
+		return(force);
+	}
 
-		return(new PVector(distance, distance));
+	PVector calculateForce(PVector ver) {
+		PVector distance = position.sub(ver);
+		PVector force = new PVector(forceEquation(distance.x), forceEquation(distance.y));
+		return(force);
 	}
 
 	void edgeCollision() {
-		
+		if(position.x > (width - radius)) {
+			movement.x *= -1;
+		} else if(position.x < radius) {
+			movement.x *= -1;
+		}
+
+		if(position.y > (height - radius)) {
+			movement.y *= -1;
+		} else if(position.y < radius) {
+			movement.y *= -1;
+		}
 	}
 }
 
