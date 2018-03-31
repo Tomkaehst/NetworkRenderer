@@ -11,6 +11,7 @@ Two kind of forces act on each vertex. First, the connections pull vertices toge
 The force is calculated as the negative, first derivative of the sum of the potential energies.
 
 The pulling force between the vertices is formulated according to this equation, which is the classical spring equation with *k* as the spring constant.
+
 ![](/img/spring_force.png)
 
 The repulsion is expressed with the following equation; essentially Coloumb’s law.
@@ -23,7 +24,8 @@ The force is calculated as follows
 
 with
 
-![](/img/nabla.png).
+![](/img/nabla.png)
+
 
 Therefore, the ‘goal’ of the algorithm is to find a configuration of the vertices, in which no net force is acting on them, i.e. the state of minimal energy of the system. 
 
