@@ -3,7 +3,10 @@ A processing script that renders a network and aligns them in space according to
 
 The aim is to render a network consisting of vertices which are connected. These networks are expressed as matrices (vertices x connection), like that:
 
-![](/img/sample_matrix.png) ![](/img/rendered_network.jpeg)
+![](/img/sample_matrix.png)
+
+
+![](/img/rendered_network.jpeg)
            
 The example matrix **X** results in a network where only node 1 is connected to node 2 and node 3, whereas node 2 and 3 aren't connected. In processing, this is handled with two objects: *Vertex* and *Network*. The object *Vertex* renders a single vertex and it’s connections to other vertex objects. A whole network of vertices is initialised as a network object. 
 
