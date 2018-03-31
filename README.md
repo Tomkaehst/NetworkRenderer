@@ -15,7 +15,7 @@ The pulling force between the vertices is formulated according to this equation,
 
 The repulsion is expressed with the following equation; essentially Coloumb’s law.
 
-![](/img/columb_force.png)
+![](/img/coloumb_force.png)
 
 The force is calculated as follows
 
