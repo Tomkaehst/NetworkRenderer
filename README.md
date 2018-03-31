@@ -19,7 +19,11 @@ The repulsion is expressed with the following equation; essentially Coloumb’s 
 
 The force is calculated as follows
 
-![](/img/force_field.png) with ![](/img/nabla.png).
+![](/img/force_field.png)
+
+with
+
+![](/img/nabla.png).
 
 Therefore, the ‘goal’ of the algorithm is to find a configuration of the vertices, in which no net force is acting on them, i.e. the state of minimal energy of the system. 
 
