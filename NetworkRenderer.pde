@@ -13,9 +13,10 @@
 // tricky! Let's see how I do . . .
 // (Object-oriented style would be good here)
 
-int[][] testArray = {{1, 1, 1},
-					 {1, 1, 1},
-					 {1, 1, 1}};
+int[][] testArray = {{0, 1, 1, 1},
+					 {1, 0, 1, 1},
+					 {1, 1, 0, 1},
+					 {0, 1, 1, 0}};
 int cols = testArray[1].length;
 int rows = testArray.length;
 

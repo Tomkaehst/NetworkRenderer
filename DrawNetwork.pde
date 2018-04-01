@@ -36,7 +36,6 @@ class Network {
 			for(int i = 0; i < connectionLines.length; i++){
 				if(connectionLines[i] != 0){
 					v.displayVertex(vArray.get(connectionLines[i]));
-					v.applyForce(vArray.get(connectionLines[i]).position);
 				}
 			}
 		}
