@@ -34,7 +34,9 @@ Therefore, the ‘goal’ of the algorithm is to find a configuration of the ver
 
 
 *What has to be done*
-* Adding an algorithm for the force calculation
-* Find a good way to visualise the state of the system (map the change of potential energy to the vertices colour values?)
-* Add function to add vertices and connections by clicking
+-[x] Adding an algorithm for the force calculation
+-[x] Find a good way to visualise the state of the system (map the change of potential energy to the vertices colour values?)
+-[] Add function to add vertices and connections by clicking
+-[] Add possibility to manipulate vertices by clicking and dragging with the mouse
+-[] Implement a simple path finding alrogithm *(just for fun!)*
 
