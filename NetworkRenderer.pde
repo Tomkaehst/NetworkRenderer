@@ -13,12 +13,16 @@
 // tricky! Let's see how I do . . .
 // (Object-oriented style would be good here)
 
-int[][] testArray = {{0, 1, 1, 1},
-					 {1, 0, 1, 1},
-					 {1, 1, 0, 1},
-					 {0, 1, 1, 0}};
-int cols = testArray[1].length;
-int rows = testArray.length;
+int[][] testArray = {{1, 0, 1, 0, 1, 1, 0},
+					 {0, 1, 0, 1, 0, 0, 0},
+					 {1, 0, 1, 0, 0, 0, 0},
+					 {0, 1, 0, 1, 1, 0, 1},
+					 {1, 0, 0, 1, 1, 0, 0},
+					 {1, 0, 0, 0, 0, 1, 1},
+					 {0, 0, 0, 0, 0, 1, 1}};
+
+int rows = testArray[1].length;
+int cols = testArray.length;
 
 
 Network net;
@@ -27,7 +31,7 @@ Network net;
 
 void setup() {
 	size(720, 720);
-	frameRate(30);
+	frameRate(120);
 	pixelDensity(displayDensity());
 	smooth();
 

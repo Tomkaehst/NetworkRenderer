@@ -6,7 +6,7 @@ class Vertex {
 	int[] connectance;
 
 	Vertex(int r, int conn[]) {
-		position = new PVector(random(3*radius, width-3*radius), random(3*radius, height-3*radius));
+		position = new PVector(random(width/2 - 10, width/2 + 10), random(height/2-10, height/2+10));
 		movement = new PVector(0, 0);
 		acceleration = new PVector(0, 0);
 		radius = r;
@@ -23,7 +23,6 @@ class Vertex {
 		stroke(2);
 		line(position.x, position.y, ver.position.x, ver.position.y);
 
-		applyForce(ver.position);
 	}
 
 	// Practise a little bit of functional programming: divide the rendering process for the vertex connections into serveral functions.
@@ -55,24 +54,31 @@ class Vertex {
 	void applyForce(PVector ver) {
 		edgeCollision();
 		acceleration = calculateForce(ver);
-		//movement = calculateForce(ver);
+		acceleration.limit(1);
 		movement.add(acceleration);
 		position.add(movement);
 		acceleration.mult(0);
-		movement.mult(0.35);
+		movement.mult(0.75);
 	}
 
 
-// I got it. I just added the raw force value to the indidivual accelerations, which make the vertices bounce without any sense. I need to translate and rotate the scene to the target vertex and let it move in that direction!
 	float forceEquation(float distance) {
-		float force = -(0.01 * distance - 100000/pow(distance, 2));
-		return(force);
+		float force = -(0.0001 * distance - 4000.0 * pow(distance, -2.0));
+
+		/* The function can easily go to infinity, because it exceeds the range of the float datatype,
+			therefore, we need to catch these infinity cases and return a force of 2, if that happens.
+		*/
+		if(force == Float.POSITIVE_INFINITY) {
+			return(3.0);
+		} else {
+			println(force);
+			return(force);
+		}
 	}
 
 	PVector calculateForce(PVector ver) {
 		PVector direction = PVector.sub(position, ver);
 		direction.normalize();
-
 		float distance = position.dist(ver);
 		float force = forceEquation(distance);
 		direction.mult(force);
@@ -95,6 +101,15 @@ class Vertex {
 			movement.y *= -1;
 			position.y = radius;
 		}
+	}
+
+	// Implement function, that allows dragging one vertex! [later]
+	void mouseDrag() {
+
+	}
+
+	boolean isClicked() {
+		return(true);
 	}
 }
 

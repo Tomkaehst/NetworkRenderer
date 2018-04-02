@@ -7,8 +7,8 @@ class Network {
 
 	Network(int[][] net, int d) {
 		network = net;
-		int vertices = network.length;
-		int connections = network[1].length;
+		int connections = network.length;
+		int vertices = network[1].length;
 		diameter = d;
 
 		/* NOTE BECAUSE THIS MADE A LOT OF PAIN:
@@ -26,17 +26,22 @@ class Network {
 	// Loop through the Vertex ArrayList and call the Vertex-own function to display them.
 	void renderNetwork() {
 		for(Vertex v : vArray) {
-			// First we get the positions of the vertices that are connected to the
-			// current one and pass it to the displayVertex function in the end to 
-			// show the whole network.
 			int[] connectionLines = v.isConnected();
+			//v.mouseDrag();
 
-			// This works for now, but now any vertix with index 0 isn't rendered!!!
-			// I need to shorten the output array from isConnected in the vertex class definition!!!
 			for(int i = 0; i < connectionLines.length; i++){
 				if(connectionLines[i] != 0){
 					v.displayVertex(vArray.get(connectionLines[i]));
 				}
+			}
+		}
+
+		// Let each vertex "feel" each other vertex by calling one vertex and calculating it's force to every other vertex
+		for(int i = 0; i < vArray.size(); i++) {
+			Vertex v = vArray.get(i);
+
+			for(int j = 0; j < vArray.size(); j++) {
+				v.applyForce(vArray.get(j).position);
 			}
 		}
 
