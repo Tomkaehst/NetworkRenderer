@@ -29,6 +29,7 @@ class Network {
 			int[] connectionLines = v.isConnected();
 			//v.mouseDrag();
 
+			// I need to rethink this, because it could lead to some vertices not being displayed, if they're note connected!
 			for(int i = 0; i < connectionLines.length; i++){
 				if(connectionLines[i] != 0){
 					v.displayVertex(vArray.get(connectionLines[i]));
