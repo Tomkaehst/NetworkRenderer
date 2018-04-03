@@ -28,6 +28,7 @@ class Vertex {
 	// Practise a little bit of functional programming: divide the rendering process for the vertex connections into serveral functions.
 	// 1. Get to know, to which vertex this one is connected (output: array); 2. Save their position in a PVector and return it (output: PVector); 3. We can then call
 	// both functions in the displayVertex function and simply draw a line to these positions.
+	// REVIEW THIS CODE; THIS CAN'T BE RIGHT!!!
 
 	int[] isConnected() {
 		int amountConnections = 0;
@@ -47,6 +48,7 @@ class Vertex {
 				j++;
 			}
 		}
+
 		return(connectanceArrayPos);
 	}
 
@@ -105,22 +107,13 @@ class Vertex {
 
 	// Implement function, that allows dragging one vertex! [later]
 	void mouseDrag() {
-		PVector mouse = new PVector(mouseX, mouseY);
-		position = mouse;
-	}
-
-	boolean isClicked() {
-		boolean isTrue = true;
-		boolean isFalse = false;
-
-		// Checking the x-coordiates
 		if(mouseX < position.x + 2*radius && mouseX > position.x - 2* radius) {
 			if(mouseY < position.y + 2*radius && mouseY > position.y - 2* radius) {
 				if(mousePressed == true){
-					return(isTrue);
+					PVector mouse = new PVector(mouseX, mouseY);
+					position = mouse;
 				}
 			}
 		}
-		return(false);
 	}
 }

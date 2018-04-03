@@ -17,7 +17,7 @@ int[][] testArray = {{1, 1, 0, 1, 1},
 					 {1, 0, 1, 0, 1},
 					 {0, 1, 0, 1, 0},
 					 {1, 0, 1, 1, 0},
-					 {1, 1, 0, 0, 1}};
+					 {0, 1, 0, 0, 1}};
 
 Network net;
 
@@ -37,5 +37,5 @@ void draw() {
 	background(220);
 
 	net.renderNetwork();
-	//println(net.vArray.get(0).acceleration.x);
+	println(testArray[0]);
 }

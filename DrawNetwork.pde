@@ -27,10 +27,7 @@ class Network {
 	void renderNetwork() {
 		for(Vertex v : vArray) {
 			int[] connectionLines = v.isConnected();
-
-			if(v.isClicked() == true) {
-				v.mouseDrag();
-			}
+			v.mouseDrag();
 
 			// I need to rethink this, because it could lead to some vertices not being displayed, if they're note connected!
 			for(int i = 0; i < connectionLines.length; i++){
