@@ -63,7 +63,7 @@ class Vertex {
 
 
 	float forceEquation(float distance) {
-		float force = -(0.0001 * distance - 4000.0 * pow(distance, -2.0));
+		float force = -(0.005 * distance - 20000.0 * pow(distance, -2.0));
 
 		/* The function can easily go to infinity, because it exceeds the range of the float datatype,
 			therefore, we need to catch these infinity cases and return a force of 2, if that happens.
@@ -71,7 +71,7 @@ class Vertex {
 		if(force == Float.POSITIVE_INFINITY) {
 			return(3.0);
 		} else {
-			println(force);
+			//println(force);
 			return(force);
 		}
 	}
@@ -105,17 +105,22 @@ class Vertex {
 
 	// Implement function, that allows dragging one vertex! [later]
 	void mouseDrag() {
-
+		PVector mouse = new PVector(mouseX, mouseY);
+		position = mouse;
 	}
 
 	boolean isClicked() {
-		return(true);
+		boolean isTrue = true;
+		boolean isFalse = false;
+
+		// Checking the x-coordiates
+		if(mouseX < position.x + 2*radius && mouseX > position.x - 2* radius) {
+			if(mouseY < position.y + 2*radius && mouseY > position.y - 2* radius) {
+				if(mousePressed == true){
+					return(isTrue);
+				}
+			}
+		}
+		return(false);
 	}
 }
-
-
-
-
-
-
-

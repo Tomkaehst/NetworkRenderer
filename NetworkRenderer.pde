@@ -13,16 +13,17 @@
 // tricky! Let's see how I do . . .
 // (Object-oriented style would be good here)
 
-int[][] testArray = {{1, 1, 1, 0},
-					 {1, 0, 1, 0},
-					 {1, 1, 1, 1},
-					 {1, 0, 1, 0}};
+int[][] testArray = {{1, 1, 0, 1, 1},
+					 {1, 0, 1, 0, 1},
+					 {0, 1, 0, 1, 0},
+					 {1, 0, 1, 1, 0},
+					 {1, 1, 0, 0, 1}};
 
 Network net;
 
 void setup() {
 	size(720, 720);
-	frameRate(120);
+	frameRate(60);
 	pixelDensity(displayDensity());
 	smooth();
 
