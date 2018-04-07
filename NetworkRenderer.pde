@@ -11,7 +11,6 @@
 // tion of the vertex itself and all the other 
 // ones it is conntected to. This seems quite
 // tricky! Let's see how I do . . .
-// (Object-oriented style would be good here)
 
 int[][] testArray = {{1, 1, 0, 1, 1},
 					 {1, 0, 1, 0, 1},
@@ -23,7 +22,7 @@ Network net;
 
 void setup() {
 	size(720, 720);
-	frameRate(120);
+	frameRate(50);
 	pixelDensity(displayDensity());
 	noSmooth();
 

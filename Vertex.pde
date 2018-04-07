@@ -1,11 +1,15 @@
 class Vertex {
+	/* Definition of the vertex class. A vertex is a "node" in a network, that is connected via lines. A vertex has an ID for easy retracing and drawing from the adjacency matrix. The movement of the vertex is accomplished by it's PVectors position, movement and acceleration; acceleration is added to movement, which is added to the position. Upon initialization, the vertex get's a radius and the rows from the adjacency matrix, that contains its connections to the other vertices.  */
+	int vertexID;
 	PVector position;
 	PVector movement;
 	PVector acceleration;
 	int radius;
 	int[] connectance;
 
-	Vertex(int r, int conn[]) {
+	Vertex(int r, int conn[], int ID) {
+		vertexID = ID;
+		println(vertexID);
 		position = new PVector(random(width/2 - 10, width/2 + 10), random(height/2-10, height/2+10));
 		movement = new PVector(0, 0);
 		acceleration = new PVector(0, 0);
@@ -18,17 +22,16 @@ class Vertex {
 		translate(position.x, position.y);
 		fill(195, 82, 80);
 		ellipse(0, 0, radius*2, radius*2);
+
+		fill(220, 60);
+		textSize(32);
+		text(vertexID + 1, -10, 10);
 		popMatrix();
 
 		stroke(2);
 		line(position.x, position.y, ver.position.x, ver.position.y);
 
 	}
-
-	// Practise a little bit of functional programming: divide the rendering process for the vertex connections into serveral functions.
-	// 1. Get to know, to which vertex this one is connected (output: array); 2. Save their position in a PVector and return it (output: PVector); 3. We can then call
-	// both functions in the displayVertex function and simply draw a line to these positions.
-	// REVIEW THIS CODE; THIS CAN'T BE RIGHT!!!
 
 	int[] isConnected() {
 		int amountConnections = 0;
@@ -44,8 +47,10 @@ class Vertex {
 
 		for(int i = 0; i < connectance.length; i++){
 			if(connectance[i] == 1) {
-				connectanceArrayPos[j] = i;
-				j++;
+				if(i != vertexID) {
+					connectanceArrayPos[j] = i;
+					j++;
+				}
 			}
 		}
 
@@ -73,7 +78,6 @@ class Vertex {
 		if(force == Float.POSITIVE_INFINITY) {
 			return(3.0);
 		} else {
-			//println(force);
 			return(force);
 		}
 	}

@@ -19,7 +19,7 @@ class Network {
 		add function as the first argument!!! */
 
 		for(int i = 0; i < vertices; i++) {
-			vArray.add(i, new Vertex(diameter, network[i]));
+			vArray.add(i, new Vertex(diameter, network[i], i));
 		}
 	}
 
