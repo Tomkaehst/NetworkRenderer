@@ -23,9 +23,9 @@ Network net;
 
 void setup() {
 	size(720, 720);
-	frameRate(60);
+	frameRate(120);
 	pixelDensity(displayDensity());
-	smooth();
+	noSmooth();
 
 	net = new Network(testArray, 30);
 }
