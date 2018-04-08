@@ -12,19 +12,18 @@
 // ones it is conntected to. This seems quite
 // tricky! Let's see how I do . . .
 
-int[][] testArray = {{1, 1, 0, 1, 1},
-					 {1, 0, 1, 0, 1},
-					 {0, 1, 0, 1, 0},
-					 {1, 0, 1, 1, 0},
-					 {0, 1, 0, 0, 1}};
+int[][] testArray = {{0, 1, 0, 1},
+					 {1, 0, 1, 0},
+					 {0, 1, 0, 0},
+					 {1, 0, 1, 0}};
 
 Network net;
 
 void setup() {
 	size(720, 720);
-	frameRate(50);
+	frameRate(120);
 	pixelDensity(displayDensity());
-	noSmooth();
+	smooth();
 
 	net = new Network(testArray, 30);
 }
@@ -36,5 +35,4 @@ void draw() {
 	background(220);
 
 	net.renderNetwork();
-	println(testArray[0]);
 }

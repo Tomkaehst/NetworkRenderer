@@ -38,7 +38,7 @@ Network net;
 
 public void setup() {
 	
-	frameRate(50);
+	frameRate(40);
 	
 	
 
@@ -52,7 +52,6 @@ public void draw() {
 	background(220);
 
 	net.renderNetwork();
-	println(testArray[0]);
 }
 class Network {
 
@@ -122,22 +121,50 @@ class Vertex {
 		acceleration = new PVector(0, 0);
 		radius = r;
 		connectance = conn;
+
+
+		// Getting a "static" array with the positions of connected vertices right from the beginning --> connectanceArrayPos
+		int amountConnections = 0;
+		for (int i = 0; i < connectance.length; i++) {
+			if(connectance[i] != 0) {
+				amountConnections++;
+			}
+		}
+		int[] connectanceArrayPos = new int[amountConnections];
+		int j = 0;
+		for(int i = 0; i < connectance.length; i++){
+			if(connectance[i] == 1) {
+				if(i != vertexID) {
+					connectanceArrayPos[j] = i;
+					j++;
+				}
+			}
+		}
+
 	}
 
-	public void displayVertex(Vertex ver) {
+	public void displayVertex() {
 		pushMatrix();
 		translate(position.x, position.y);
 		fill(195, 82, 80);
 		ellipse(0, 0, radius*2, radius*2);
-
+		
+		// Render some text with the ID of the vertex + 1, so we don't see the array index but the "real world" index in the matrix.
 		fill(220, 60);
 		textSize(32);
 		text(vertexID + 1, -10, 10);
 		popMatrix();
+	}
 
+	public void displayConnection(Vertex ver) {
+
+		int[] connectanceArrayPos = new 
+
+		pushMatrix();
+		translate(position.x, position.y);
 		stroke(2);
 		line(position.x, position.y, ver.position.x, ver.position.y);
-
+		popMatrix();
 	}
 
 	public int[] isConnected() {
