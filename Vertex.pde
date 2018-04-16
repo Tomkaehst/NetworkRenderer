@@ -58,7 +58,8 @@ class Vertex {
 
 	// This force is applied to unconnected vertices; otherwise they would completelty overlap at some point in time.
 	float simpleRepulsion(float distance) {
-		float force = pow(distance - 5, 2) * 0.01;
+		float force = pow(distance, 2) * 0.01;
+		
 		if(force == Float.POSITIVE_INFINITY) {
 			return(2.0);
 		} else if(force == Float.NEGATIVE_INFINITY) {

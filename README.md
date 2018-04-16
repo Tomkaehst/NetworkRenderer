@@ -39,4 +39,5 @@ Therefore, the ‘goal’ of the algorithm is to find a configuration of the ver
 - [ ] Add function to add vertices and connections by clicking
 - [x] Add possibility to manipulate vertices by clicking and dragging with the mouse
 - [ ] Implement a simple path finding alrogithm *(just for fun!)*
+- [ ] Use *startShape* and *endShape* to draw the lines between the vertices! In general: avoid drawing the same connections over and over again. The adjacency matrix is symmetrical! 
 

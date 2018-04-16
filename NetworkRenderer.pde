@@ -33,6 +33,7 @@ void setup() {
 
 void draw() {
 	background(220);
-
+	
 	net.renderNetwork();
+
 }
