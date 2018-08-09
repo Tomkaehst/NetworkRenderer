@@ -16,7 +16,7 @@ public class NetworkRenderer extends PApplet {
 
 // Network Graph Renderer, by Tom Kache, Friedrich-Schiller University Jena, March 29th 2018
 
-// Initialization of the graph array/matrix. Each 
+// Initialization of the graph array/matrix. Each
 // rows represents one vertex, which is connected
 // to other vertices by connections that are de-
 // noted as values in the colums. E.g. the one in
@@ -24,21 +24,20 @@ public class NetworkRenderer extends PApplet {
 // ected to vertex 2. So, in order to display the
 // network, we loop through each row and create
 // some nice data type which can store the posi-
-// tion of the vertex itself and all the other 
+// tion of the vertex itself and all the other
 // ones it is conntected to. This seems quite
 // tricky! Let's see how I do . . .
 
-int[][] testArray = {{1, 1, 0, 1, 1},
-					 {1, 0, 1, 0, 1},
-					 {0, 1, 0, 1, 0},
-					 {1, 0, 1, 1, 0},
-					 {0, 1, 0, 0, 1}};
+int[][] testArray = {{0, 1, 0, 1},
+					 					{1, 0, 1, 0},
+					 					{0, 1, 0, 1},
+					 					{1, 0, 0, 0}};
 
 Network net;
 
 public void setup() {
 	
-	frameRate(40);
+	frameRate(120);
 	
 	
 
@@ -52,56 +51,75 @@ public void draw() {
 	background(220);
 
 	net.renderNetwork();
+
 }
 class Network {
 
 	// The array stores the vertex under consideration in each row and its connectios to other vertices in colums. The value of the connection represents their weight. 0 means no connection
-	int diameter;
+	int diameter, connections, vertices;
 	int[][] network;
 	ArrayList<Vertex> vArray = new ArrayList<Vertex>();
 
 	Network(int[][] net, int d) {
 		network = net;
-		int connections = network.length;
-		int vertices = network[1].length;
+		connections = network.length;
+		vertices = network[1].length;
 		diameter = d;
 
-		/* NOTE BECAUSE THIS MADE A LOT OF PAIN:
+		/* NOTE BECAUSE THIS CAUSED A LOT OF PAIN:
 		The ArrayList type is not really an array rather than a list,
 		so we need to treat it differently, i.e. the ArrayList has
 		it's own functions, that work differently. If we want to add
 		an object to position i, we need to give this index to the
 		add function as the first argument!!! */
-
 		for(int i = 0; i < vertices; i++) {
 			vArray.add(i, new Vertex(diameter, network[i], i));
 		}
 	}
 
-	// Loop through the Vertex ArrayList and call the Vertex-own function to display them.
+	// Loop through the Vertex ArrayList and call the Vertex-own function to display them and their connectections. The forces and the mouseDrag is also called --> only this function needs to be called in the main programm
 	public void renderNetwork() {
-		for(Vertex v : vArray) {
-			int[] connectionLines = v.isConnected();
+		for (Vertex v : vArray) {
+			v.displayVertex();
 			v.mouseDrag();
+			renderConnections();
+			applyForce();
+		}
+	}
 
-			// I need to rethink this, because it could lead to some vertices not being displayed, if they're note connected!
-			for(int i = 0; i < connectionLines.length; i++){
-				if(connectionLines[i] != 0){
-					v.displayVertex(vArray.get(connectionLines[i]));
+	// Loops through the connectance array and displays one line for each connection.
+	// STILL WAY TO MANY LINES! I CURRENTLY DON'T KNOW HOW TO DO THAT: WHAT WOULD BE A GOOD ALGORITHM TO DISPLAY ONLY ONE CONNECTION BETWEEN VERTICES FROM AN ADJACENCY MATRIX???
+	public void renderConnections() {
+		for (Vertex v : vArray) {
+			for(int i = 0; i < v.connectance.length; i++) {
+				if(v.connectance[i] == 1) {
+					PVector nextVertexPos = vArray.get(i).position;
+
+					pushStyle();
+					stroke(3);
+					fill(20);
+					line(v.position.x, v. position.y, nextVertexPos.x, nextVertexPos.y);
+					popStyle();
 				}
 			}
 		}
+	}
 
-		// Let each vertex "feel" each other vertex by calling one vertex and calculating it's force to every other vertex
-		for(int i = 0; i < vArray.size(); i++) {
-			Vertex v = vArray.get(i);
+	// Calculate the force between each connected vertex according to the vertex function apply force. For the formula see the README
+	public void applyForce() {
+		for (Vertex v : vArray) {
+			for(int i = 0; i < vArray.size(); i++) {
+				// Get the position of the connected vertex for that we want to calculate the force
+				PVector nextVertexPos = vArray.get(i).position;
 
-			for(int j = 0; j < vArray.size(); j++) {
-				v.applyForce(vArray.get(j).position);
+				// Now if the two (the called and the one with loaded position in nextVertexPos) are connected the applyForce
+				if(v.connectance[i] == 1) {
+					v.applyForce(nextVertexPos, true);
+				} else if(v.connectance[i] == 0) {
+					v.applyForce(nextVertexPos, false);
+				}
 			}
 		}
-
-
 	}
 }
 class Vertex {
@@ -121,81 +139,27 @@ class Vertex {
 		acceleration = new PVector(0, 0);
 		radius = r;
 		connectance = conn;
-
-
-		// Getting a "static" array with the positions of connected vertices right from the beginning --> connectanceArrayPos
-		int amountConnections = 0;
-		for (int i = 0; i < connectance.length; i++) {
-			if(connectance[i] != 0) {
-				amountConnections++;
-			}
-		}
-		int[] connectanceArrayPos = new int[amountConnections];
-		int j = 0;
-		for(int i = 0; i < connectance.length; i++){
-			if(connectance[i] == 1) {
-				if(i != vertexID) {
-					connectanceArrayPos[j] = i;
-					j++;
-				}
-			}
-		}
-
 	}
 
 	public void displayVertex() {
 		pushMatrix();
+		pushStyle();
 		translate(position.x, position.y);
 		fill(195, 82, 80);
-		ellipse(0, 0, radius*2, radius*2);
+		ellipse(0, 0, radius, radius);
 		
 		// Render some text with the ID of the vertex + 1, so we don't see the array index but the "real world" index in the matrix.
 		fill(220, 60);
 		textSize(32);
 		text(vertexID + 1, -10, 10);
+		popStyle();
 		popMatrix();
 	}
 
-	public void displayConnection(Vertex ver) {
-
-		int[] connectanceArrayPos = new 
-
-		pushMatrix();
-		translate(position.x, position.y);
-		stroke(2);
-		line(position.x, position.y, ver.position.x, ver.position.y);
-		popMatrix();
-	}
-
-	public int[] isConnected() {
-		int amountConnections = 0;
-
-		for(int i = 0; i < connectance.length; i++) {
-			if(connectance[i] != 0){
-				amountConnections++;
-			}
-		}
-
-		int[] connectanceArrayPos = new int[amountConnections];
-		int j = 0;
-
-		for(int i = 0; i < connectance.length; i++){
-			if(connectance[i] == 1) {
-				if(i != vertexID) {
-					connectanceArrayPos[j] = i;
-					j++;
-				}
-			}
-		}
-
-		return(connectanceArrayPos);
-	}
-
-
-	public void applyForce(PVector ver) {
+	public void applyForce(PVector ver, boolean connected) {
 		edgeCollision();
-		acceleration = calculateForce(ver);
-		acceleration.limit(1);
+		acceleration = calculateForce(ver, connected);
+		acceleration.limit(1.2f);
 		movement.add(acceleration);
 		position.add(movement);
 		acceleration.mult(0);
@@ -203,9 +167,9 @@ class Vertex {
 	}
 
 
+	// This force equation is applied to connected vertices so that they position themselves according to minimal energy
 	public float forceEquation(float distance) {
 		float force = -(0.005f * distance - 20000.0f * pow(distance, -2.0f));
-
 		/* The function can easily go to infinity, because it exceeds the range of the float datatype,
 			therefore, we need to catch these infinity cases and return a force of 2, if that happens.
 		*/
@@ -216,11 +180,34 @@ class Vertex {
 		}
 	}
 
-	public PVector calculateForce(PVector ver) {
+	// This force is applied to unconnected vertices; otherwise they would completelty overlap at some point in time.
+	public float simpleRepulsion(float distance) {
+		float force = pow(distance, 2) * 0.0001f;
+		
+		if(force == Float.POSITIVE_INFINITY) {
+			return(2.0f);
+		} else if(force == Float.NEGATIVE_INFINITY) {
+			return(-2.0f);
+		} else {
+			return(force);
+		}
+	}
+
+	public PVector calculateForce(PVector ver, boolean connected) {
 		PVector direction = PVector.sub(position, ver);
 		direction.normalize();
 		float distance = position.dist(ver);
-		float force = forceEquation(distance);
+		float force;
+
+		// the boolean value connected is passed from the applyForce function, that get's it from the Network function applyForce (see DrawNetwork.pde)
+		if(connected == true) {
+			force = forceEquation(distance);	
+		} else if(connected == false) {
+			force = simpleRepulsion(distance);
+		} else {
+			force = 1.0f;
+		}
+
 		direction.mult(force);
 		return(direction);
 	}
@@ -245,8 +232,8 @@ class Vertex {
 
 	// Implement function, that allows dragging one vertex! [later]
 	public void mouseDrag() {
-		if(mouseX < position.x + 2*radius && mouseX > position.x - 2* radius) {
-			if(mouseY < position.y + 2*radius && mouseY > position.y - 2* radius) {
+		if(mouseX < position.x + radius && mouseX > position.x - radius) {
+			if(mouseY < position.y + radius && mouseY > position.y - radius) {
 				if(mousePressed == true){
 					PVector mouse = new PVector(mouseX, mouseY);
 					position = mouse;
@@ -255,7 +242,7 @@ class Vertex {
 		}
 	}
 }
-  public void settings() { 	size(720, 720); 	noSmooth(); 	pixelDensity(displayDensity()); }
+  public void settings() { 	size(720, 720); 	smooth(); 	pixelDensity(displayDensity()); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "NetworkRenderer" };
     if (passedArgs != null) {

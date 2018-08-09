@@ -45,7 +45,7 @@ class Vertex {
 
 	// This force equation is applied to connected vertices so that they position themselves according to minimal energy
 	float forceEquation(float distance) {
-		float force = -(0.005 * distance - 20000.0 * pow(distance, -2.0));
+		float force = -(0.05 * distance - 20.0 * pow(distance, -2.0));
 		/* The function can easily go to infinity, because it exceeds the range of the float datatype,
 			therefore, we need to catch these infinity cases and return a force of 2, if that happens.
 		*/
@@ -58,7 +58,7 @@ class Vertex {
 
 	// This force is applied to unconnected vertices; otherwise they would completelty overlap at some point in time.
 	float simpleRepulsion(float distance) {
-		float force = pow(distance, 2) * 0.01;
+		float force = pow(distance, 2) * 0.001;
 		
 		if(force == Float.POSITIVE_INFINITY) {
 			return(2.0);
