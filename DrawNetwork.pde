@@ -33,7 +33,7 @@ class Network {
 	}
 
 	// Loops through the connectance array and displays one line for each connection.
-	// STILL WAY TO MANY LINES! I CURRENTLY DON'T KNOW HOW TO DO THAT: WHAT WOULD BE A GOOD ALGORITHM TO DISPLAY ONLY ONE CONNECTION BETWEEN VERTICES FROM AN ADJACENCY MATRIX???
+	// REPLACE THIS WITH A FUNCTION THAT READS OUT THE ADJACENCY MATRIY PROPERLY!
 	void renderConnections() {
 		for (Vertex v : vArray) {
 			for(int i = 0; i < v.connectance.length; i++) {
