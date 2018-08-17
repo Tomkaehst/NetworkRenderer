@@ -28,16 +28,20 @@ public class NetworkRenderer extends PApplet {
 // ones it is conntected to. This seems quite
 // tricky! Let's see how I do . . .
 
-int[][] testArray = {{0, 1, 0, 1},
-					 					{1, 0, 1, 0},
-					 					{0, 1, 0, 1},
-					 					{1, 0, 0, 0}};
+// IMPORTANT: What I implemented here is NOT an adjacency matrix!
+// I have been quite stupid and misunderstood the whole concept. An adjacency
+// matrix is defined as A = (a_{i, j}) which defines edges from node i to j!!!
+
+int[][] testArray = {{0, 1, 0, 0},
+					 					{0, 0, 1, 1},
+					 					{0, 0, 0, 1},
+					 					{0, 0, 0, 0}};
 
 Network net;
 
 public void setup() {
 	
-	frameRate(120);
+	frameRate(40);
 	
 	
 
@@ -147,7 +151,7 @@ class Vertex {
 		translate(position.x, position.y);
 		fill(195, 82, 80);
 		ellipse(0, 0, radius, radius);
-		
+
 		// Render some text with the ID of the vertex + 1, so we don't see the array index but the "real world" index in the matrix.
 		fill(220, 60);
 		textSize(32);
@@ -169,7 +173,7 @@ class Vertex {
 
 	// This force equation is applied to connected vertices so that they position themselves according to minimal energy
 	public float forceEquation(float distance) {
-		float force = -(0.005f * distance - 20000.0f * pow(distance, -2.0f));
+		float force = -(0.05f * distance - 20.0f * pow(distance, -2.0f));
 		/* The function can easily go to infinity, because it exceeds the range of the float datatype,
 			therefore, we need to catch these infinity cases and return a force of 2, if that happens.
 		*/
@@ -182,8 +186,8 @@ class Vertex {
 
 	// This force is applied to unconnected vertices; otherwise they would completelty overlap at some point in time.
 	public float simpleRepulsion(float distance) {
-		float force = pow(distance, 2) * 0.0001f;
-		
+		float force = pow(distance, 2) * 0.001f;
+
 		if(force == Float.POSITIVE_INFINITY) {
 			return(2.0f);
 		} else if(force == Float.NEGATIVE_INFINITY) {
@@ -201,7 +205,7 @@ class Vertex {
 
 		// the boolean value connected is passed from the applyForce function, that get's it from the Network function applyForce (see DrawNetwork.pde)
 		if(connected == true) {
-			force = forceEquation(distance);	
+			force = forceEquation(distance);
 		} else if(connected == false) {
 			force = simpleRepulsion(distance);
 		} else {
@@ -242,7 +246,7 @@ class Vertex {
 		}
 	}
 }
-  public void settings() { 	size(720, 720); 	smooth(); 	pixelDensity(displayDensity()); }
+  public void settings() { 	size(720, 720); 	smooth(); 	pixelDensity(1); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "NetworkRenderer" };
     if (passedArgs != null) {

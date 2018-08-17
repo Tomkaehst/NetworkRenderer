@@ -16,6 +16,8 @@
 // I have been quite stupid and misunderstood the whole concept. An adjacency
 // matrix is defined as A = (a_{i, j}) which defines edges from node i to j!!!
 
+// Additionally, I messed up my force calculations now... 
+
 int[][] testArray = {{0, 1, 0, 0},
 					 					{0, 0, 1, 1},
 					 					{0, 0, 0, 1},
