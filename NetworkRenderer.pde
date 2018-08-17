@@ -12,6 +12,10 @@
 // ones it is conntected to. This seems quite
 // tricky! Let's see how I do . . .
 
+// IMPORTANT: What I implemented here is NOT an adjacency matrix!
+// I have been quite stupid and misunderstood the whole concept. An adjacency
+// matrix is defined as A = (a_{i, j}) which defines edges from node i to j!!!
+
 int[][] testArray = {{0, 1, 0, 0},
 					 					{0, 0, 1, 1},
 					 					{0, 0, 0, 1},

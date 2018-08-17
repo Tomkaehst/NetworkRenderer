@@ -23,7 +23,7 @@ class Vertex {
 		translate(position.x, position.y);
 		fill(195, 82, 80);
 		ellipse(0, 0, radius, radius);
-		
+
 		// Render some text with the ID of the vertex + 1, so we don't see the array index but the "real world" index in the matrix.
 		fill(220, 60);
 		textSize(32);
@@ -59,7 +59,7 @@ class Vertex {
 	// This force is applied to unconnected vertices; otherwise they would completelty overlap at some point in time.
 	float simpleRepulsion(float distance) {
 		float force = pow(distance, 2) * 0.001;
-		
+
 		if(force == Float.POSITIVE_INFINITY) {
 			return(2.0);
 		} else if(force == Float.NEGATIVE_INFINITY) {
@@ -77,7 +77,7 @@ class Vertex {
 
 		// the boolean value connected is passed from the applyForce function, that get's it from the Network function applyForce (see DrawNetwork.pde)
 		if(connected == true) {
-			force = forceEquation(distance);	
+			force = forceEquation(distance);
 		} else if(connected == false) {
 			force = simpleRepulsion(distance);
 		} else {
